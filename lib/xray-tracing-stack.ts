@@ -15,7 +15,7 @@ export class XrayTracingStack extends cdk.Stack {
       architecture: Architecture.ARM_64,
       timeout: cdk.Duration.seconds(10),
       bundling: {
-        nodeModules: ["aws-xray-sdk-core"],
+        nodeModules: ["aws-xray-sdk-core", "aws-xray-sdk-fetch"],
         minify: false,
         platform: 'node',
         forceDockerBundling: false,

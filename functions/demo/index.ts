@@ -1,6 +1,9 @@
 import { ListBucketsCommand, S3Client } from "@aws-sdk/client-s3";
 import { type Handler } from "aws-cdk-lib/aws-lambda";
 import AWSXRay from "aws-xray-sdk-core";
+import { captureFetchGlobal } from 'aws-xray-sdk-fetch';
+
+captureFetchGlobal();
 
 const s3Client = AWSXRay.captureAWSv3Client(new S3Client());
 
@@ -18,7 +21,10 @@ export const handler: Handler = async (event: any) => {
   subSegment?.close();
 
   const result = await AWSXRay.captureAsyncFunc("test-async", async (sub) => {
-    sub?.addAnnotation("test-annotation", "789");
+
+    const response = await fetch("https://example.com");
+    console.log(await response.text());
+
     await wait(1000);
 
     sub?.addAnnotation("test-annotation", "abc");
