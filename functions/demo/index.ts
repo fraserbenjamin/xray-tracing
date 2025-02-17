@@ -20,11 +20,10 @@ export const handler: Handler = async (event: any) => {
   await wait(1000);
   subSegment?.close();
 
+  const test = await fetch("https://example.com");
+  console.log(await test.text());
+
   const result = await AWSXRay.captureAsyncFunc("test-async", async (sub) => {
-
-    const response = await fetch("https://example.com");
-    console.log(await response.text());
-
     await wait(1000);
 
     sub?.addAnnotation("test-annotation", "abc");
